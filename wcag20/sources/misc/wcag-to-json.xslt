@@ -223,7 +223,7 @@
 	</xsl:template>
 	
 	<xsl:template match="item[not(p/loc)]" mode="technique">
-		<xsl:variable name="content"><xsl:value-of select="child::p"/></xsl:variable>
+		<xsl:variable name="content"><xsl:apply-templates select="p"/></xsl:variable>
 		<xsl:text>{</xsl:text>
 		<xsl:text>"id": "TECH:future</xsl:text><xsl:number/><xsl:text>",</xsl:text>
 		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string($content)"/><xsl:text>"</xsl:text><!-- requested key was text -->
