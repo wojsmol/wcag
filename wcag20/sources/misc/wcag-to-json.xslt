@@ -141,17 +141,20 @@
 	</xsl:template>
 	
 	<xsl:template match="p" mode="sc-details">
+		<xsl:variable name="content"><xsl:apply-templates/></xsl:variable>
+		<xsl:if test="descendant::specref"><xsl:message><xsl:value-of select="$content"/></xsl:message></xsl:if>
 		<xsl:text>{</xsl:text>
 		<xsl:text>"type": "p",</xsl:text>
-		<xsl:text>"text": "</xsl:text><xsl:value-of select="wcag:json-string(.)"/><xsl:text>"</xsl:text>
+		<xsl:text>"text": "</xsl:text><xsl:value-of select="wcag:json-string($content)"/><xsl:text>"</xsl:text>
 		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="note" mode="sc-details">
+		<xsl:variable name="content"><xsl:apply-templates/></xsl:variable>
 		<xsl:text>{</xsl:text>
 		<xsl:text>"type": "note",</xsl:text>
-		<xsl:text>"text": "</xsl:text><xsl:value-of select="wcag:json-string(.)"/><xsl:text>"</xsl:text>
+		<xsl:text>"text": "</xsl:text><xsl:value-of select="wcag:json-string($content)"/><xsl:text>"</xsl:text>
 		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
@@ -220,9 +223,10 @@
 	</xsl:template>
 	
 	<xsl:template match="item[not(p/loc)]" mode="technique">
+		<xsl:variable name="content"><xsl:value-of select="child::p"/></xsl:variable>
 		<xsl:text>{</xsl:text>
 		<xsl:text>"id": "TECH:future</xsl:text><xsl:number/><xsl:text>",</xsl:text>
-		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(.)"/><xsl:text>"</xsl:text><!-- requested key was text -->
+		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string($content)"/><xsl:text>"</xsl:text><!-- requested key was text -->
 		<xsl:if test="ulist | olist">
 			<xsl:call-template name="using">
 				<xsl:with-param name="list" select="ulist | olist"/>
