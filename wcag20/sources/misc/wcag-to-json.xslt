@@ -150,10 +150,11 @@
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
-	<xsl:template match="note" mode="sc-details">
+	<xsl:template match="note/p" mode="sc-details">
 		<xsl:variable name="content"><xsl:apply-templates/></xsl:variable>
 		<xsl:text>{</xsl:text>
 		<xsl:text>"type": "note",</xsl:text>
+		<xsl:text>"handle": "Note </xsl:text><xsl:value-of select="count(preceding-sibling::*) + 1"/><xsl:text>",</xsl:text>
 		<xsl:text>"text": "</xsl:text><xsl:value-of select="wcag:json-string($content)"/><xsl:text>"</xsl:text>
 		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
