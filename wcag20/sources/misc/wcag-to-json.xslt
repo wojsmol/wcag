@@ -180,10 +180,11 @@
 		</xsl:choose>
 		<xsl:text>": [</xsl:text>
 		<xsl:apply-templates select="ulist/item | olist/item" mode="technique"/>
-		<xsl:if test="div5[@role = 'situation']">
+		<xsl:if test="div5"><!-- removed [@role = 'situation'], so other div5 will be treated like situation -->
+			<xsl:if test="ulist"><xsl:text>,</xsl:text></xsl:if>
 			<xsl:text>{</xsl:text>
 			<xsl:text>"situations": [</xsl:text>
-			<xsl:apply-templates select="div5[@role = 'situation']" mode="situation"/>
+			<xsl:apply-templates select="div5" mode="situation"/><!-- removed [@role = 'situation'], so other div5 will be treated like situation -->
 			<xsl:text>]</xsl:text>
 			<xsl:text>}</xsl:text>
 		</xsl:if>
@@ -192,7 +193,7 @@
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
-	<xsl:template match="div5[@role = 'situation']" mode="situation">
+	<xsl:template match="div5" mode="situation"><!-- removed [@role = 'situation'], so other div5 will be treated like situation -->
 		<xsl:text>{</xsl:text>
 		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(head)"/><xsl:text>",</xsl:text>
 		<xsl:text>"techniques": [</xsl:text>
