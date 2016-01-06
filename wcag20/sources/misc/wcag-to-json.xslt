@@ -238,10 +238,14 @@
 	
 	<xsl:template match="loc" mode="technique">
 		<xsl:param name="using"/>
+		<xsl:variable name="technique.title">
+			<xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
+		</xsl:variable>
 		<xsl:text>{</xsl:text>
 		<xsl:text>"id": "TECH:</xsl:text>
 		<xsl:value-of select="@href"/>
-		<xsl:text>"</xsl:text>
+		<xsl:text>",</xsl:text>
+		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string($technique.title)"/><xsl:text>"</xsl:text>
 		<xsl:if test="$using">
 			<xsl:call-template name="using">
 				<xsl:with-param name="list" select="$using"/>
