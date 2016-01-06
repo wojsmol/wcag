@@ -132,10 +132,10 @@
 	</xsl:template>
 	
 	<xsl:template match="item" mode="sc-details">
-		<xsl:variable name="text"><xsl:apply-templates select="p" mode="sc-text"/></xsl:variable>
+		<xsl:variable name="content"><xsl:apply-templates select="p" mode="sc-text"/></xsl:variable>
 		<xsl:text>{</xsl:text>
 		<xsl:text>"handle": "</xsl:text><xsl:value-of select="wcag:json-string(p/emph[@role = 'sc-handle'])"/><xsl:text>",</xsl:text><!-- requested key was title -->
-		<xsl:text>"text": "</xsl:text><xsl:value-of select="wcag:json-string($text)"/><xsl:text>"</xsl:text>
+		<xsl:text>"text": "</xsl:text><xsl:value-of select="wcag:json-string($content)"/><xsl:text>"</xsl:text>
 		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
@@ -159,11 +159,15 @@
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
-	<xsl:template match="p[@role = 'i' or @role = 'v']" mode="sc-text">
+	<xsl:template match="p" mode="sc-text">
 		<xsl:apply-templates mode="sc-text"/>
 	</xsl:template>
 	
 	<xsl:template match="emph[@role = 'sc-handle']" mode="sc-text"/>
+	
+	<xsl:template match="*|text()" mode="sc-text">
+		<xsl:apply-templates select="."/>
+	</xsl:template>
 	
 	<xsl:template match="div2[@role = 'gladvisory'] | div4[@role = 'sufficient'] | div4[@role = 'advisory'] | div4[@role = 'failures'] | div4[@role = 'tech-optional'][olist or ulist or div5]">
 		<xsl:text>{</xsl:text>
@@ -263,7 +267,9 @@
 	</xsl:template>
 	
 	<!-- Override imported templates that are causing problems -->
+	<!--
 	<xsl:template match="head">
 		<xsl:apply-templates/>
 	</xsl:template>
+	-->
 </xsl:stylesheet>
