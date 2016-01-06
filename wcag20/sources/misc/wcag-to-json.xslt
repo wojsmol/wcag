@@ -54,7 +54,7 @@
 			<xsl:when test="@id='robust'">Robust</xsl:when>
 		</xsl:choose>
 		<xsl:text>",</xsl:text><!-- requested key was title -->
-		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(head)"/><xsl:text>",</xsl:text><!-- full text of the principle, not in the requested key -->
+		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(replace(head, 'Principle [1-9]: .* - ', ''))"/><xsl:text>",</xsl:text><!-- full text of the principle, not in the requested key -->
 
 		<xsl:text>"guidelines": [</xsl:text>
 		<xsl:apply-templates select="div3[@role='group1']"></xsl:apply-templates>
