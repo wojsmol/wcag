@@ -197,7 +197,7 @@
 		<xsl:text>{</xsl:text>
 		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(head)"/><xsl:text>",</xsl:text>
 		<xsl:text>"techniques": [</xsl:text>
-		<xsl:apply-templates select="ulist/item | olist/item" mode="technique"/>
+		<xsl:apply-templates select="ulist | olist" mode="technique"/>
 		<xsl:text>]</xsl:text>
 		<!-- sections, comma before last brace -->
 		<xsl:text>}</xsl:text>
@@ -206,6 +206,29 @@
 	
 	<xsl:template match="div2/ulist | div4/ulist | div5/ulist"></xsl:template>
 	
+	<xsl:template match="olist" mode="technique">
+		<xsl:apply-templates select="item" mode="technique"/>
+		<xsl:if test="position() != last()">,</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="ulist[preceding-sibling::olist]" mode="technique">
+		<xsl:variable name="title">
+			<xsl:apply-templates select="preceding-sibling::p"/>
+		</xsl:variable>
+		<xsl:text>{"group": {</xsl:text>
+		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string($title)"/><xsl:text>",</xsl:text>
+		<xsl:text>"techniques": [</xsl:text>
+		<xsl:apply-templates select="item" mode="technique"/>
+		<xsl:text>]</xsl:text>
+		<xsl:text>}}</xsl:text>
+		<xsl:if test="position() != last()">,</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="ulist[not(preceding-sibling::olist)]" mode="technique">
+		<xsl:apply-templates select="item" mode="technique"/>
+		<xsl:if test="position() != last()">,</xsl:if>
+	</xsl:template>
+
 	<xsl:template match="item[p/loc][count(p/loc) = 1]" mode="technique">
 		<xsl:apply-templates select="p/loc" mode="technique">
 			<xsl:with-param name="using" select="ulist | olist"/>
@@ -266,6 +289,10 @@
 		<xsl:text>,"using": [</xsl:text>
 		<xsl:apply-templates select="$list/item" mode="technique"/>
 		<xsl:text>]</xsl:text>
+	</xsl:template>
+	
+	<xsl:template match="*[@use-id]" mode="#all" priority="1">
+		<xsl:apply-templates select="//*[@id = current()/@use-id]" mode="#current"/>
 	</xsl:template>
 	
 	<!-- Override imported templates that are causing problems -->
