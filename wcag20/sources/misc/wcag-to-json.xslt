@@ -121,9 +121,9 @@
 		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template match="ulist" mode="sc-details">
+	<xsl:template match="ulist | olist" mode="sc-details">
 		<xsl:text>{</xsl:text>
-		<xsl:text>"type": "ulist",</xsl:text>
+		<xsl:text>"type": "</xsl:text><xsl:value-of select="name()"/><xsl:text>",</xsl:text>
 		<xsl:text>"items": [</xsl:text>
 		<xsl:apply-templates select="item" mode="sc-details"/>
 		<xsl:text>]</xsl:text>
@@ -134,7 +134,7 @@
 	<xsl:template match="item" mode="sc-details">
 		<xsl:variable name="content"><xsl:apply-templates select="p" mode="sc-text"/></xsl:variable>
 		<xsl:text>{</xsl:text>
-		<xsl:text>"handle": "</xsl:text><xsl:value-of select="wcag:json-string(p/emph[@role = 'sc-handle'])"/><xsl:text>",</xsl:text><!-- requested key was title -->
+		<xsl:text>"handle": "</xsl:text><xsl:value-of select="wcag:json-string(substring-before(p/emph[@role = 'sc-handle'], ':'))"/><xsl:text>",</xsl:text><!-- requested key was title -->
 		<xsl:text>"text": "</xsl:text><xsl:value-of select="wcag:json-string($content)"/><xsl:text>"</xsl:text>
 		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
