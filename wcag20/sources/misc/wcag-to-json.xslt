@@ -94,7 +94,7 @@
 		</xsl:variable>
 		<xsl:text>{</xsl:text>
 		<xsl:text>"id": "WCAG2:</xsl:text><xsl:value-of select="@id"/><xsl:text>",</xsl:text>
-		<xsl:text>"num": "</xsl:text><xsl:number level="multiple" count="div2[@role='principle'] | div3 | div5" format="1.1.1"/><xsl:text>",</xsl:text>
+		<xsl:text>"num": "</xsl:text><xsl:number level="multiple" count="div2[@role='principle'] | div3" format="1.1."/><xsl:value-of select="count(../preceding-sibling::div4/div5) + count(preceding-sibling::div5) + 1"/><xsl:text>",</xsl:text>
 		<xsl:text>"level": "</xsl:text><xsl:call-template name="sc-level"/><xsl:text>",</xsl:text>
 		<xsl:text>"handle": "</xsl:text><xsl:value-of select="wcag:json-string(head)"/><xsl:text>",</xsl:text><!-- requested key was title -->
 		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(string($sc))"/><xsl:text>",</xsl:text>
