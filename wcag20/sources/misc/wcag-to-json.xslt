@@ -229,14 +229,14 @@
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="item[p/loc][count(p/loc) = 1]" mode="technique">
+	<xsl:template match="item[p/loc][count(p//loc) = 1]" mode="technique">
 		<xsl:apply-templates select="p/loc" mode="technique">
 			<xsl:with-param name="using" select="ulist | olist"/>
 		</xsl:apply-templates>
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
-	<xsl:template match="item[p/loc][count(p/loc) > 1]" mode="technique">
+	<xsl:template match="item[p/loc][count(p//loc) > 1]" mode="technique">
 		<xsl:text>{</xsl:text>
 		<xsl:text>"and": </xsl:text>
 		<xsl:text>[</xsl:text>
