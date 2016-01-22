@@ -12,6 +12,9 @@
 	<xsl:param name="understanding.doc" select="document($understanding.file)"/>
 	<xsl:param name="techniques.doc" select="document($techniques.file)"/>
 	
+	<xsl:variable name="tech-linktypes" select="('aria', 'script', 'css', 'failure', 'flash', 'general', 'html', 'pdf', 'server', 'silverlight', 'smil', 'text')"/>
+	<xsl:variable name="linktypes" select="($tech-linktypes, 'understanding')"/>
+	
 	<xsl:output method="text"/>
 	
 	<xsl:function name="wcag:json-string" as="xs:string">
@@ -84,8 +87,9 @@
 		<xsl:apply-templates select="div4/div5[@role = 'sc']"></xsl:apply-templates>
 		<xsl:text>]</xsl:text>
 
-		<xsl:text>}&#10;</xsl:text>
+		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
+		<xsl:text>&#10;</xsl:text>
 	</xsl:template>
 	
 	<xsl:template match="div5[@role = 'sc']">
@@ -108,8 +112,9 @@
 		<xsl:apply-templates select="$understanding.doc//*[@id = current()/@id]//*[@role='sufficient' or @role='advisory' or @role='tech-optional' or @role='failures'][olist or ulist or div5]"></xsl:apply-templates>
 		<xsl:text>]</xsl:text>
 		
-		<xsl:text>}&#10;</xsl:text>
+		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
+		<xsl:text>&#10;</xsl:text>
 	</xsl:template>
 	
 	<xsl:template name="sc-level">
@@ -191,6 +196,7 @@
 		<xsl:text>]</xsl:text>
 		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
+		<xsl:text>&#10;</xsl:text>
 	</xsl:template>
 	
 	<xsl:template match="div5" mode="situation"><!-- removed [@role = 'situation'], so other div5 will be treated like situation -->
@@ -202,6 +208,7 @@
 		<!-- sections, comma before last brace -->
 		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
+		<xsl:text>&#10;</xsl:text>
 	</xsl:template>
 	
 	<xsl:template match="div2/ulist | div4/ulist | div5/ulist"></xsl:template>
@@ -211,17 +218,16 @@
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
-	<xsl:template match="ulist[preceding-sibling::olist]" mode="technique">
-		<xsl:variable name="title">
-			<xsl:apply-templates select="preceding-sibling::p"/>
-		</xsl:variable>
+	<xsl:template match="group" mode="technique">
 		<xsl:text>{"group": {</xsl:text>
-		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string($title)"/><xsl:text>",</xsl:text>
+		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(title)"/><xsl:text>",</xsl:text>
 		<xsl:text>"techniques": [</xsl:text>
-		<xsl:apply-templates select="item" mode="technique"/>
+		<xsl:apply-templates select="techniques/ulist | techniques/olist" mode="technique"/>
+		<xsl:apply-templates select="techniques/div5" mode="situation"/>
 		<xsl:text>]</xsl:text>
 		<xsl:text>}}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
+		<xsl:text>&#10;</xsl:text>
 	</xsl:template>
 	
 	<xsl:template match="ulist[not(preceding-sibling::olist)]" mode="technique">
@@ -229,25 +235,52 @@
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="item[p/loc][count(p//loc) = 1]" mode="technique">
+	<xsl:template match="item[p/loc][count(p//loc[@linktype and exists(index-of($tech-linktypes, @linktype))]) = 1 and not(p//loc[not(@linktype)])]" mode="technique">
+		<xsl:variable name="using">
+			<xsl:call-template name="check-using"/>
+		</xsl:variable>
 		<xsl:apply-templates select="p/loc" mode="technique">
-			<xsl:with-param name="using" select="ulist | olist"/>
-		</xsl:apply-templates>
+			<xsl:with-param name="using" select="$using"/>
+		</xsl:apply-templates>		
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
-	<xsl:template match="item[p/loc][count(p//loc) > 1]" mode="technique">
+	<xsl:template match="item[p/loc][count(p//loc[@linktype and exists(index-of($tech-linktypes, @linktype))]) = 1 and p//loc[@linktype = 'understanding']]" mode="technique">
+		<xsl:variable name="using">
+			<xsl:call-template name="check-using"/>
+		</xsl:variable>
+		<xsl:apply-templates select="p/loc[@linktype and exists(index-of($tech-linktypes, @linktype))]" mode="technique">
+			<xsl:with-param name="using" select="$using"/>
+		</xsl:apply-templates>		
+		<xsl:if test="position() != last()">,</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="item[p/loc][count(p//loc[@linktype and exists(index-of($tech-linktypes, @linktype))]) > 1]" mode="technique">
 		<xsl:text>{</xsl:text>
 		<xsl:text>"and": </xsl:text>
 		<xsl:text>[</xsl:text>
 		<xsl:apply-templates select="p/loc" mode="technique"/>
 		<xsl:text>]</xsl:text>
-		<xsl:if test="ulist | olist">
-			<xsl:call-template name="using">
-				<xsl:with-param name="list" select="ulist | olist"/>
-			</xsl:call-template>
-		</xsl:if>
+		<xsl:call-template name="check-using"/>
 		<xsl:text>}</xsl:text>
+		<xsl:if test="position() != last()">,</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="item[p/loc][count(p//loc[@linktype and exists(index-of($linktypes, @linktype))]) = 1 and p//loc[not(@linktype)]]" mode="technique">
+		<xsl:variable name="using">
+			<xsl:call-template name="check-using"/>
+		</xsl:variable>
+		<xsl:apply-templates select="p/loc[@linktype]" mode="technique">
+			<xsl:with-param name="using" select="$using"/>
+		</xsl:apply-templates>		
+		<xsl:if test="position() != last()">,</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="item[count(p/loc) = 1 and count(p//loc[@linktype = 'understanding']) = 1]" mode="technique">
+		<xsl:message>here</xsl:message>
+		<xsl:variable name="ref" select="//*[@id = current()/@href]"/>
+		<xsl:apply-templates select="$ref/descendant::div4[@role = 'sufficient']/olist" mode="technique"/>
+		<xsl:apply-templates select="$ref/descendant::div4[@role = 'sufficient']/div5" mode="situation"/>
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
@@ -256,16 +289,61 @@
 		<xsl:text>{</xsl:text>
 		<xsl:text>"id": "TECH:future</xsl:text><xsl:number/><xsl:text>",</xsl:text>
 		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string($content)"/><xsl:text>"</xsl:text><!-- requested key was text -->
-		<xsl:if test="ulist | olist">
-			<xsl:call-template name="using">
-				<xsl:with-param name="list" select="ulist | olist"/>
-			</xsl:call-template>
-		</xsl:if>
+		<xsl:call-template name="check-using"/>
 		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
-	<xsl:template match="loc" mode="technique">
+	<xsl:template name="check-using">
+		<xsl:choose>
+			<xsl:when test="ulist | olist">
+				<xsl:call-template name="using">
+					<xsl:with-param name="list" select="ulist | olist"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="p//loc[not(@linktype)]">
+				<xsl:variable name="list">
+					<xsl:for-each select="p//loc[not(@linktype)]">
+						<group>
+							<title><xsl:copy-of select="//*[@id = substring-after(current()/@href, '#')]"/></title>
+							<techniques>
+								<xsl:variable name="target" select="//*[@id = substring-after(current()/@href, '#')]/following-sibling::*[1]"/>
+								<xsl:choose>
+									<xsl:when test="$target/@use-id">
+										<xsl:copy-of select="//*[@id = $target/@use-id]"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:copy-of select="$target"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</techniques>
+						</group>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:call-template name="using">
+					<xsl:with-param name="list" select="$list"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="p//loc[@linktype = 'understanding']">
+				<xsl:variable name="list">
+					<xsl:for-each select="p//loc[@linktype = 'understanding']">
+						<group>
+							<title><xsl:value-of select="."/></title>
+							<techniques>
+								<xsl:variable name="ref" select="//*[@id = current()/@href]"/>
+								<xsl:copy-of select="$ref/descendant::div4[@role = 'sufficient']/olist | $ref/descendant::div4[@role = 'sufficient']/div5"/>
+							</techniques>
+						</group>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:call-template name="using">
+					<xsl:with-param name="list" select="$list"/>
+				</xsl:call-template>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template match="loc[@linktype and exists(index-of($tech-linktypes, @linktype))]" mode="technique">
 		<xsl:param name="using"/>
 		<xsl:variable name="technique.title">
 			<xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
@@ -275,19 +353,23 @@
 		<xsl:value-of select="@href"/>
 		<xsl:text>",</xsl:text>
 		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string($technique.title)"/><xsl:text>"</xsl:text>
-		<xsl:if test="$using">
-			<xsl:call-template name="using">
-				<xsl:with-param name="list" select="$using"/>
-			</xsl:call-template>
-		</xsl:if>
+		<xsl:value-of select="$using"/>
 		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 
+	<xsl:template match="loc[@linktype = 'understanding']" mode="technique">
+		<xsl:text>{</xsl:text>
+		<xsl:text>"id": "TECH:reference</xsl:text><xsl:number/><xsl:text>",</xsl:text>
+		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(.)"/><xsl:text>"</xsl:text>
+		<xsl:text>}</xsl:text>
+		<xsl:if test="position() != last()">,</xsl:if>
+	</xsl:template>
+	
 	<xsl:template name="using">
 		<xsl:param name="list" select="."/>
 		<xsl:text>,"using": [</xsl:text>
-		<xsl:apply-templates select="$list/item" mode="technique"/>
+		<xsl:apply-templates select="$list" mode="technique"/>
 		<xsl:text>]</xsl:text>
 	</xsl:template>
 	
