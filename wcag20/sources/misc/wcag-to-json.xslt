@@ -235,7 +235,7 @@
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="item[p/loc][count(p//loc[@linktype and exists(index-of($tech-linktypes, @linktype))]) = 1 and not(p//loc[not(@linktype)])]" mode="technique">
+	<xsl:template match="item[p/loc][count(p//loc[@linktype and exists(index-of($tech-linktypes, @linktype))]) = 1 and not(p//loc[not(@linktype)]) and not(p//loc[@linktype = 'understanding'])]" mode="technique">
 		<xsl:variable name="using">
 			<xsl:call-template name="check-using"/>
 		</xsl:variable>
@@ -276,9 +276,9 @@
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
+	<!-- This is a super special-case -->
 	<xsl:template match="item[count(p/loc) = 1 and count(p//loc[@linktype = 'understanding']) = 1]" mode="technique">
-		<xsl:message>here</xsl:message>
-		<xsl:variable name="ref" select="//*[@id = current()/@href]"/>
+		<xsl:variable name="ref" select="//*[@id = current()/p/loc/@href]"/>
 		<xsl:apply-templates select="$ref/descendant::div4[@role = 'sufficient']/olist" mode="technique"/>
 		<xsl:apply-templates select="$ref/descendant::div4[@role = 'sufficient']/div5" mode="situation"/>
 		<xsl:if test="position() != last()">,</xsl:if>
@@ -358,14 +358,6 @@
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="loc[@linktype = 'understanding']" mode="technique">
-		<xsl:text>{</xsl:text>
-		<xsl:text>"id": "TECH:reference</xsl:text><xsl:number/><xsl:text>",</xsl:text>
-		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(.)"/><xsl:text>"</xsl:text>
-		<xsl:text>}</xsl:text>
-		<xsl:if test="position() != last()">,</xsl:if>
-	</xsl:template>
-	
 	<xsl:template name="using">
 		<xsl:param name="list" select="."/>
 		<xsl:text>,"using": [</xsl:text>
