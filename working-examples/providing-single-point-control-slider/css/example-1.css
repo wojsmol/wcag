@@ -1,7 +1,11 @@
 .custom-slider { touch-action: pan-y; } 
 
-html { background: #eee; }
+html {
+  background: #fff;
+  color:#000;
+}
 body {
+  font-family: Arial, sans-serif;
   max-width: 800px;
   margin: 0 1em;
 }
