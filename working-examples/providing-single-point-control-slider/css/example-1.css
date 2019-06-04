@@ -33,4 +33,5 @@ html { background: #eee; }
 }
 #sliderwrapper {
   display: flex;
+  align-items: center;
 }
