@@ -15,6 +15,12 @@ var realSlider = document.querySelector(".custom-slider input[type='range']");
 
 realSlider.addEventListener('change', change, false);
 
+var buttonDecrement = document.querySelector(".custom-slider-decrement");
+var buttonIncrement = document.querySelector(".custom-slider-increment");
+
+buttonDecrement.addEventListener('click', decrement, false);
+buttonIncrement.addEventListener('click', increment, false);
+
 function sliderdown(e) {
 	var t = e.target;
 	t.setPointerCapture(e.pointerId);
@@ -26,6 +32,7 @@ function sliderup(e) {
 	t.classList.remove("active");
   e.stopPropagation();
   realSlider.focus();
+  realSlider.dispatchEvent(new Event('change', { 'bubbles': true }));
 }
 
 function slidermove(e) {
@@ -41,6 +48,7 @@ function slidermove(e) {
 	  t.style.left = newpos +'px';
     realSlider.value = (newpos/(track.clientWidth - t.clientWidth)) * (realSlider.max - realSlider.min);
   }
+  realSlider.dispatchEvent(new Event('change', { 'bubbles': true }));
 }
 
 function trackhit(e) {
@@ -55,9 +63,20 @@ function trackhit(e) {
 	t.style.left = newpos +'px';
   realSlider.value = (newpos/(track.clientWidth - t.clientWidth)) * (realSlider.max - realSlider.min);
   realSlider.focus();
+  realSlider.dispatchEvent(new Event('change', { 'bubbles': true }));
 }
 
 function change(e) {
   var newpos = (realSlider.value / (realSlider.max - realSlider.min)) * (track.clientWidth - t.clientWidth);
   t.style.left = newpos +'px'; 
+}
+
+function decrement(e) {
+  realSlider.value = Math.max(parseInt(realSlider.min), parseInt(realSlider.value) - parseInt(realSlider.step));
+  realSlider.dispatchEvent(new Event('change', { 'bubbles': true }));
+}
+
+function increment(e) {
+  realSlider.value = Math.min(parseInt(realSlider.max), parseInt(realSlider.value) + parseInt(realSlider.step));
+  realSlider.dispatchEvent(new Event('change', { 'bubbles': true }));
 }
