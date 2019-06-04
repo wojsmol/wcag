@@ -31,3 +31,6 @@ html { background: #eee; }
 .custom-slider-decrement:focus, .custom-slider-increment:focus {
   background:  #550097;
 }
+#sliderwrapper {
+  display: flex;
+}
