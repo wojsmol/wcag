@@ -24,3 +24,17 @@ body {
 
 /* use adjacent sibling selector (so order in markup is important) to show focus on the "fake" slider button */
 .custom-slider input[type="range"]:focus + .custom-slider-track .custom-slider-button { background:  #550097; }
+/* buttons */
+
+.custom-slider-decrement, .custom-slider-increment {
+  font-size: 2em;
+  font-weight: bold;
+  background: #2b5797;
+  color: #fff;
+  border: none;
+  padding: 0.5em;
+}
+
+.custom-slider-decrement:focus, .custom-slider-increment:focus {
+  background:  #550097;
+}
