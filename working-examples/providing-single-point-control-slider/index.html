@@ -13,14 +13,16 @@
     <p>Both the fake slider and the input are kept in sync via JavaScript. This is in preference over the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#slider">ARIA 1.1 Slider pattern</a>, since that pattern has known issues in touch + AT scenario (where AT will announce control behaviors that simply can't be done via JavaScript at the moment, such as "use volume keys to adjust" or "swipe up or down with one finger to adjust the value", which do however work with real range inputs). See also the larger discussion on <a href="https://github.com/w3c/aria-practices/issues/8">touch/mobile support for certain ARIA patterns</a>.</p>
     <p>Instead of using a faked slider, you should probably consider just styling the native <code>&lt;input type="range"&gt;</code> instead and saving yourself a lot of hassle...but if for whatever reason you have to opt for this custom approach, don't bother with the ARIA pattern and go for a real (but hidden) real range input approach instead.</p>
 
+<div id="sliderwrapper">
 <button class="custom-slider-decrement" aria-label="Decrement">&lt;</button>
 <div class="custom-slider" touch-action="pan-y">
-  <input type="range" min="0" max="100" value="0" aria-label="Slider">
+  <input type="range" min="0" max="10" step="1" value="0" aria-label="Slider">
   <div class="custom-slider-track">
     <div class="custom-slider-button">
     </div>
   </div>
 </div>
 <button class="custom-slider-increment" aria-label="Increment">&gt;</button>
+  </div>
 </body>
 </html>
