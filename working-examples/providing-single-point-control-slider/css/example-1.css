@@ -9,7 +9,7 @@ html { background: #eee; }
 
 .custom-slider-button {	user-select: none; -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; }
 
-.custom-slider-button.focus { background:  #550097; outline: solid 4px #000;}
+.custom-slider-button.focus { background: #ff0097; outline: solid 4px #000;}
 
 /* hide the real input type range behind the (higher z-indexed) track */
 .custom-slider input[type="range"] { position: absolute; }
