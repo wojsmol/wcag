@@ -26,6 +26,7 @@ html { background: #eee; }
   color: #fff;
   border: none;
   padding: 0.5em;
+  height: 2.5em;
 }
 
 .custom-slider-decrement:focus, .custom-slider-increment:focus {
