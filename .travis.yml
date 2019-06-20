@@ -1,8 +1,25 @@
 language: java
-before_script:
-  - curl -L http://sourceforge.net/projects/saxon/files/Saxon-HE/9.5/SaxonHE9-5-1-4J.zip/download > SaxonHE9.zip
-  - unzip SaxonHE9.zip
+env:
+  global:
+    - GH_REF: github.com/w3c/wcag.git
+    
+git:
+  depth: 3
+  
+before_install:
+  - tar -xzvf lib/apache-ant-1.10.6-bin.tar.gz
+  - export PATH=`pwd`/apache-ant-1.10.6/bin:$PATH
 
 script:
-  - ant -f wcag20/build.xml -lib saxon9he.jar -Doutputdir.understanding=${TRAVIS_BUILD_DIR}/Generated/Understanding understanding
-  - ant -f wcag20/build.xml -lib saxon9he.jar -Doutputdir.techniques=${TRAVIS_BUILD_DIR}/Generated/Techniques techniques
+  - mkdir output
+  - git clone --depth=1 --branch=gh-pages https://github.com/w3c/wcag.git output
+  - ant deploy
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep-history: true
+  local-dir: output
+  on:
+    branch: master
