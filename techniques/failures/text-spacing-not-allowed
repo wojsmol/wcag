@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title>Failure of Success Criteria 1.4.12 due to preventing user from overriding text spacing<</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
+	</head>
+	<body>
+		<h1>Failure of Success Criteria 1.4.12 due to preventing user from overriding text spacing</h1>
+		<section id="meta">
+			<h2>Metadata</h2>
+
+			<p id="sc">Success Criteria 1.4.12</p>
+			<p id="type">Failure</p>
+		</section>
+		<section id="applicability">
+			<h2>Applicability</h2>
+			<p >This techniques applies to text content created in markup languages that support text style properties.</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+			<p >The purpose of this technique is identify and test a failure condition where the user is prevented from overriding the spacing of the text within the boundaries set out in the Text Spacing success criteria. In general, user agents honour user style sheets or plugins such a Stylish. However, this failure occurs when there is no way for a user agent's layout engine to honor all the layout overrides for the user defined font spacing. It appear that it will be hard to override user style sheets, but if its possible it would be these styles which should not be overridden.
+			<ul><li><code>line-height </code></li>
+					<li><code>margin-bottom </code></li>
+					<li><code>letter-spacing  </code></li>
+					<li><code>word-spacing</code></li></ul></p>
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
+			<p>There are no known examples of this currently. This is a placeholder for docmentation of failure examples that may emerge in the future due to any changes to plugin or user agent support.
+			
+</section>
+		<section id="tests">
+		  <h2>Tests</h2>
+			<section class="test-procedure">
+				<h3>Procedure</h3>
+				<ol>
+					<li>Override the CSS on the page usng a user style sheet or a browser plugin with the maximum values listed in the success criteria, </li>
+					<ol type="a"><li>Line height (line spacing) to at least 1.5 times the font size;</li>
+					<li>Spacing following paragraphs to at least 2 times the font size;</li>
+					<li>Letter spacing (tracking) to at least 0.12 times the font size;</li>
+					<li>Word spacing to  0.16 times the font size.</li>
+				
+					</ol>
+						<li>Check if the new text spacing was NOT honoured by the web page. </li>
+					<li>Check to see if the user style sheet or plugin is working on other pages.</li>
+				</ol>
+			</section>
+			<section class="test-results">
+			  <h3>Expected Results</h3>
+			  <ul>
+			    <li>If procedure #1, #2 and #3 are true, then the failure condition applies and the success criteria has  been failed</li>
+		      </ul>
+		  </section>
+	</section>
+		<section id="related">
+		  <h2>Related Techniques</h2>
+			
+			<ul>
+				<li>F69</li>
+				<li>Failure of Success Criteria 1.4.12 due to clipped or overlapped content when text spacing is adjusted</li>
+			</ul>
+		</section>
+		<section id="resources">
+			<h2>Resources</h2>
+			<p class="instructions">Provide links to external resources that are relevant to users of the technique. This section is optional.</p>
+			<ul>
+				<li>Link</li>
+			</ul>
+		</section>
+	</body>
+</html>
