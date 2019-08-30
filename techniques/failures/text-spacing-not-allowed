@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 	<head>
-		<title>Failure of Success Criteria 1.4.12 due to preventing user from overriding text spacing<</title>
+		<title>Failure of Success Criteria 1.4.12 due to preventing user from overriding text spacing</title>
 		<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
 	</head>
 	<body>
@@ -23,7 +23,7 @@
 		</section>
 		<section id="examples">
 			<h2>Examples</h2>
-			<p>There are no known examples of this currently. This is a placeholder for docmentation of failure examples that may emerge in the future due to any changes to plugin or user agent support.
+			<p>There are no known examples of this currently. This is a placeholder for docmentation of failure examples that may emerge in the future due to any changes to plugin or user agent support.</p>
 			
 </section>
 		<section id="tests">
