@@ -18,11 +18,8 @@
 		</section>
 		<section id="description">
 			<h2>Description</h2>
-			<p >The purpose of this technique is identify and test a failure condition where the user is prevented from overriding the spacing of the text within the boundaries set out in the Text Spacing success criteria. In general, user agents honour user style sheets or plugins such a Stylish. However, this failure occurs when there is no way for a user agent's layout engine to honor all the layout overrides for the user defined font spacing. It appear that it will be hard to override user style sheets, but if its possible it would be these styles which should not be overridden.
-			<ul><li><code>line-height </code></li>
-					<li><code>margin-bottom </code></li>
-					<li><code>letter-spacing  </code></li>
-					<li><code>word-spacing</code></li></ul></p>
+			<p >The purpose of this technique is identify and test a failure condition where the user is prevented from overriding the spacing of the text within the boundaries set out in the Text Spacing success criteria. In general, user agents honour user style sheets or plugins such a Stylish. However, this failure occurs when there is no way for a user agent's layout engine to honor all the layout overrides for the user defined font spacing. It appears impossible to currently override user style sheets, but this may change.
+		</p>
 		</section>
 		<section id="examples">
 			<h2>Examples</h2>
