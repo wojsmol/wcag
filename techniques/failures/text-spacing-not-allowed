@@ -18,7 +18,7 @@
 		</section>
 		<section id="description">
 			<h2>Description</h2>
-			<p >The purpose of this technique is identify and test a failure condition where the user is prevented from overriding the spacing of the text within the boundaries set out in the Text Spacing success criteria. In general, user agents honour user style sheets or plugins such a Stylish. However, this failure occurs when there is no way for a user agent's layout engine to honor all the layout overrides for the user defined font spacing. It appears impossible to currently override user style sheets, but this may change.
+			<p >The purpose of this technique is identify and test a failure condition where the user is prevented from overriding the spacing of the text within the boundaries set out in the Text Spacing success criteria. In general, user agents honour user style sheets or plugins such a Stylus. However, this failure occurs when there is no way for a user agent's layout engine to honor all the layout overrides for the user defined font spacing. It appears impossible to currently override user style sheets, but this may change.
 		</p>
 		</section>
 		<section id="examples">
