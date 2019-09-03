@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 	<head>
-		<title>Failure of Success Criteria 1.4.12 due to preventing user from overriding text spacing</title>
+		<title>Failure of Success Criterion 1.4.12 due to preventing user from overriding text spacing</title>
 		<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
 	</head>
 	<body>
-		<h1>Failure of Success Criteria 1.4.12 due to preventing user from overriding text spacing</h1>
+		<h1>Failure of Success Criterion 1.4.12 due to preventing user from overriding text spacing</h1>
 		<section id="meta">
 			<h2>Metadata</h2>
 
-			<p id="sc">Success Criteria 1.4.12</p>
+			<p id="sc">Success Criterion 1.4.12</p>
 			<p id="type">Failure</p>
 		</section>
 		<section id="applicability">
@@ -18,7 +18,7 @@
 		</section>
 		<section id="description">
 			<h2>Description</h2>
-			<p >The purpose of this technique is identify and test a failure condition where the user is prevented from overriding the spacing of the text within the boundaries set out in the Text Spacing success criteria. In general, user agents honour user style sheets or plugins such a Stylus. However, this failure occurs when there is no way for a user agent's layout engine to honor all the layout overrides for the user defined font spacing. It appears impossible to currently override user style sheets, but this may change.
+			<p>The purpose of this technique is identify and test a failure condition where the user is prevented from overriding the spacing of the text within the boundaries set out in the Text Spacing success criteria. In general, user agents honor user style sheets or plugins to implement CSS changes for users such as Stylus. However, this failure occurs when there is no way for a user agent's layout engine to honor all the layout overrides for the user defined font spacing. It appears impossible to currently override user style sheets, but this may change.
 		</p>
 		</section>
 		<section id="examples">
@@ -38,14 +38,14 @@
 					<li>Word spacing to  0.16 times the font size.</li>
 				
 					</ol>
-						<li>Check if the new text spacing was NOT honoured by the web page. </li>
+						<li>Check if the new text spacing was NOT honored by the web page. </li>
 					<li>Check to see if the user style sheet or plugin is working on other pages.</li>
 				</ol>
 			</section>
 			<section class="test-results">
 			  <h3>Expected Results</h3>
 			  <ul>
-			    <li>If procedure #1, #2 and #3 are true, then the failure condition applies and the success criteria has  been failed</li>
+			    <li>If procedure #1, #2 and #3 are true, then the content failure condition applies and the content fails the Success Criterion.</li>
 		      </ul>
 		  </section>
 	</section>
@@ -53,7 +53,7 @@
 		  <h2>Related Techniques</h2>
 			
 			<ul>
-				<li>F69</li>
+        <li><a href="../failures/F69">F69</a></li>
 				<li>Failure of Success Criteria 1.4.12 due to clipped or overlapped content when text spacing is adjusted</li>
 			</ul>
 		</section>
