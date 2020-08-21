@@ -1,5 +1,4 @@
 language: java
-dist: trusty
 env:
   global:
     - GH_REF: github.com/wojsmol/wcag.git
